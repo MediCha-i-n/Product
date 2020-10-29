@@ -13,29 +13,37 @@ router.get('/', function(req, res, next) {
 router.get('/getPatientData/:patientHash', async (req, res, next) => {
     const { patientHash } = req.params;
     if (!patientHash) {
-        res.send('Include params - patientHash');
+        res.json({
+            message: 'Include params - patientHash',
+        });
         return;
     }
     const queryResult = await queryPatientHash('doctor', decodeURI(patientHash));
     if (!queryResult) {
-        res.send('Not exist patientHash');
+        res.json({
+            message: 'Not exist patientHash'
+        });
         return;
     }
-    res.send(queryResult);
+    res.json(queryResult);
 });
 
 router.post('/uploadPatientData', async (req, res, next) => {
     const { doctorNumber, patientHash, rawImgCID, resultImgCID } = req.body;
     if (!doctorNumber || !patientHash || !rawImgCID || !resultImgCID) {
-        res.send('Include body - doctorNumber & patientHash & rawImg & resultImg');
+        res.json({
+            message: 'Include body - doctorNumber & patientHash & rawImgCID & resultImgCID'
+        });
         return;
     }
     const uploadResult = await uploadPatientData(doctorNumber, patientHash, rawImgCID, resultImgCID);
     if (!uploadResult) {
-        res.send('Upload Fail');
+        res.json({
+            message: 'Upload Fail'
+        });
         return;
     }
-    res.send(uploadResult);
+    res.json(uploadResult);
 });
 
 module.exports = router;

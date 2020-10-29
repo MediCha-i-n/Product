@@ -12,15 +12,19 @@ router.get('/', function(req, res, next) {
 router.get('/getMyData/:myHash', async (req, res, next) => {
     const { myHash } = req.params;
     if (!myHash) {
-        res.send('Include params - myHash');
+        res.json({
+            message: 'Include params - myHash'
+        });
         return;
     }
     const queryResult = await queryPatientHash('patient', decodeURI(myHash));
     if (!queryResult) {
-        res.send('Not exist myHash');
+        res.json({
+            message: 'Not exist myHash'
+        });
         return;
     }
-    res.send(queryResult);
+    res.json(queryResult);
 });
 
 module.exports = router;
